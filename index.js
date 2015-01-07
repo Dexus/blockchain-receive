@@ -27,8 +27,8 @@ module.exports = {
         if(req.query.hasOwnProperty(key)) {
           var query = req.query[key];
 
-          if(query.substring(0, 7) === 'custom-') {
-            customArguments[key] = query;
+          if(key.substring(0, 7) === 'custom-') {
+            customArguments[key.substring(7)] = query;
           }
         }
       }
@@ -55,7 +55,7 @@ module.exports = {
       }
     });
   },
-  generateAddress: function(customArguments, callback) {
+  generateAddress: function(receiveAddress, customArguments, callback) {
     if(options.expressApp === null || options.baseURL === null) {
       throw new Error('Module must be set up first.');
     }
@@ -64,14 +64,14 @@ module.exports = {
 
     serializedArgs.push(serialize({
       method: 'create',
-      address: address,
-      callback: callbackUrl
+      address: receiveAddress,
+      callback: options.baseURL + '/blockchain-receive'
     }));
 
-    serializedArgs.push(serialize(additionalInfo, 'x-'));
+    serializedArgs.push(serialize(customArguments, 'custom-'));
 
     request
-    .get(options.baseURL + '/api/receive?' + serializedArgs.join('&'))
+    .get('https://blockchain.info/api/receive?' + serializedArgs.join('&'))
     .end(function(err, res) {
       if(err) {
         throw new err;
