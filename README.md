@@ -27,23 +27,23 @@ Generate a new Bitcoin address which will forward all Bitcoins to the ```recipie
 
 ###Example
 
-  var express = require('express');
-  var blockchain = require('blockchain-receive');
+    var express = require('express');
+    var blockchain = require('blockchain-receive');
 
-  var app = express();
+    var app = express();
 
-  blockchain.setup(app, 'http://example.com');
+    blockchain.setup(app, 'http://example.com');
 
-  blockchain.onTransactionChange(function(info, done) {
-    console.log(info);
-    done(true);
-  });
+    blockchain.onTransactionChange(function(info, done) {
+      console.log(info);
+      done(true);
+    });
 
-  blockchain.generateAddress('1FfmbHfnpaZjKFvyi1okTjJJusN455paPH', {
-    customParam: 'somevalue123',
-    secret: 'secretvalue'
-  }, function(address) {
-    console.log(address);
-  });
+    blockchain.generateAddress('1FfmbHfnpaZjKFvyi1okTjJJusN455paPH', {
+      customParam: 'somevalue123',
+      secret: 'secretvalue'
+    }, function(address) {
+      console.log(address);
+    });
 
-  app.listen(80);
+    app.listen(80);
